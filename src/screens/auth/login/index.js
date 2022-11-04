@@ -14,12 +14,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {Button} from '~/components';
+import {Button, LabelInput} from '~/components';
 import utilityMethods from '~/utils/utilityMethods';
 import {AuthService, InvoiceService} from '~/services';
 import {showMessage} from 'react-native-flash-message';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUser, selectAuthUser} from '~/redux/reducers/authSlice';
+const behavior = Platform.OS === 'ios' ? 'padding' : 'height';
 
 export const LogIn = props => {
   const [username, setUsername] = useState(AuthService.username);
@@ -60,31 +61,25 @@ export const LogIn = props => {
   }, [username, password]);
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
+    <KeyboardAvoidingView behavior={behavior} style={styles.container}>
       <View style={styles.inputWrapper}>
         <Text style={styles.logo}>101 Digital</Text>
         <View>
-          <View>
-            <Text style={styles.label}>Email Address</Text>
-            <TextInput
-              value={username}
-              style={styles.email}
-              placeholder="demo@demo.com"
-              onChangeText={setUsername}
-            />
-          </View>
-          <View>
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-              value={password}
-              style={styles.password}
-              secureTextEntry={true}
-              placeholder="*******"
-              onChangeText={setPassword}
-            />
-          </View>
+          <LabelInput
+            label="Email Address"
+            value={username}
+            style={styles.email}
+            placeholder="demo@demo.com"
+            onChangeText={setUsername}
+          />
+          <LabelInput
+            label="Password"
+            value={password}
+            style={styles.password}
+            secureTextEntry={true}
+            placeholder="*******"
+            onChangeText={setPassword}
+          />
           <Button title={'Login'} style={styles.login} onPress={onLoginPress} />
         </View>
       </View>
