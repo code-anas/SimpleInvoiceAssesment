@@ -1,11 +1,16 @@
 import ApiManager from './ApiManager';
 import Resources, {Singleton} from './Resources';
+import config from '~/config/appConfig';
+const authConfig = config.auth;
 
 class AuthService extends Resources {
   authUser = {};
   routes = {
     login: 'token',
   };
+  // Sandbox test user
+  username = 'dung+octopus4@101digital.io';
+  password = 'Abc@123456';
 
   constructor() {
     super(arguments);
@@ -18,6 +23,11 @@ class AuthService extends Resources {
   }
 
   login = async payload => {
+    payload = {
+      ...authConfig,
+      ...payload,
+    };
+
     return ApiManager.post(this.routes.login, payload);
   };
 }
