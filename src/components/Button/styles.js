@@ -13,6 +13,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: hp('6%'),
     borderRadius: 20,
+    flexDirection: 'row',
+    
   },
   title: {
     fontSize: 13,

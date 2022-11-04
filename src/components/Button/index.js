@@ -1,10 +1,18 @@
 import React, {useContext} from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, Text, TouchableOpacity} from 'react-native';
 import styles from './styles';
 
 export const Button = props => {
-  const {title, onPress, style, titleStyle, sendToBuyerButtonStyle, disabled} =
-    props;
+  const {
+    title,
+    onPress,
+    style,
+    titleStyle,
+    sendToBuyerButtonStyle,
+    disabled,
+    loadingColor = 'white',
+    isLoading = false,
+  } = props;
 
   return (
     <TouchableOpacity
@@ -12,6 +20,7 @@ export const Button = props => {
       onPress={onPress}
       style={[styles.container, style, sendToBuyerButtonStyle]}>
       <Text style={[styles.title, titleStyle]}>{title}</Text>
+      {isLoading && <ActivityIndicator size={20} color={loadingColor} />}
     </TouchableOpacity>
   );
 };

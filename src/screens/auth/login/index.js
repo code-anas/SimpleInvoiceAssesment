@@ -16,9 +16,12 @@ const behavior = Platform.OS === 'ios' ? 'padding' : 'height';
 export const LogIn = props => {
   const [username, setUsername] = useState(AuthService.username);
   const [password, setPassword] = useState(AuthService.password);
+  const [isSubmit, setIsSubmit] = useState(false);
   const dispatch = useDispatch();
 
   const onLoginPress = useCallback(() => {
+    if (isSubmit) return;
+
     if (!utilityMethods.isEmailValid(username)) {
       alert('Please type correct email!');
       return;
@@ -29,6 +32,7 @@ export const LogIn = props => {
       return;
     }
 
+    setIsSubmit(true);
     AuthService.login({username, password}).then(res => {
       if (res.error) {
         showMessage({
@@ -47,9 +51,10 @@ export const LogIn = props => {
         // InvoiceService.find().then(res => {
         //   console.log('res', JSON.stringify(res.data.data));
         // });
+        setIsSubmit(false);
       }
     });
-  }, [username, password]);
+  }, [username, password, isSubmit]);
 
   return (
     <KeyboardAvoidingView behavior={behavior} style={styles.container}>
@@ -71,7 +76,12 @@ export const LogIn = props => {
             placeholder="*******"
             onChangeText={setPassword}
           />
-          <Button title={'Login'} style={styles.login} onPress={onLoginPress} />
+          <Button
+            title={'Login'}
+            style={styles.login}
+            onPress={onLoginPress}
+            isLoading={isSubmit}
+          />
         </View>
       </View>
     </KeyboardAvoidingView>
