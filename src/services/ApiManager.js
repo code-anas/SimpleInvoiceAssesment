@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 import NetInfo from '@react-native-community/netinfo';
 import axios from 'axios';
-import config from '~/config/appConfig';
+import config from '@/config/appConfig';
 
 const BASE_URL = config.server_url;
 

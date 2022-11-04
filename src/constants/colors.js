@@ -11,7 +11,7 @@ export default {
   golden: '#ffd200',
   darkGolden: '#ef9500',
   gray: '#7a7a7a',
-  background: '#F5F5F5',
+  background: '#fafafa',
   switchBackground: '#3ec459',
   placeholder: '#c8c8c8',
   blueButton: '#5e90e6',

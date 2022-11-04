@@ -1,4 +1,4 @@
-import {Singleton} from '~/services/Resources';
+import {Singleton} from '@/services/Resources';
 class UtilityMethods {
   isEmailValid = email => {
     let reg =

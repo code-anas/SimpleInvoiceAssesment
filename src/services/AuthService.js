@@ -1,6 +1,6 @@
 import ApiManager from './ApiManager';
 import Resources, {Singleton} from './Resources';
-import config from '~/config/appConfig';
+import config from '@/config/appConfig';
 const authConfig = config.auth;
 
 class AuthService extends Resources {
