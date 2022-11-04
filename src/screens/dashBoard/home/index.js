@@ -21,13 +21,14 @@ export const Home = props => {
         fla
         style={{flex: 1}}
         data={invoices}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item.invoiceId}
         showsHorizontalScrollIndicator={false}
         renderItem={({item, index}) => {
-          console.log(item);
           return (
-            <View>
-              <Text>{item?.type}</Text>
+            <View style={{marginVertical: 10}}>
+              <Text>{item?.balanceAmount}</Text>
+              <Text>{item?.currency}</Text>
+              <Text>{item?.description}</Text>
             </View>
           );
         }}
