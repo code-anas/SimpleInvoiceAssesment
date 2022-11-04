@@ -25,7 +25,11 @@ export const Home = observer(props => {
 
   return (
     <View style={styles.container}>
-      <TextInput placeholder="Search invoice" style={styles.search} />
+      <TextInput
+        placeholder="Search invoice"
+        style={styles.search}
+        onChangeText={invoices.onSearch}
+      />
       <FlatList
         extraData={toJS(invoices.list)}
         style={{flex: 1}}
@@ -35,6 +39,7 @@ export const Home = observer(props => {
         renderItem={({item, index}) => {
           return (
             <View style={{marginVertical: 10}}>
+              <Text>{item?.invoiceNumber}</Text>
               <Text>{item?.balanceAmount}</Text>
               <Text>{item?.currency}</Text>
               <Text>{item?.description}</Text>
