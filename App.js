@@ -4,6 +4,8 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Routing from './src/boot/routing';
 import AppLoading from './src/context/AppLoading';
 import FlashMessage from 'react-native-flash-message';
+import {store} from './src/redux/store';
+import {Provider} from 'react-redux';
 
 LogBox.ignoreAllLogs(true);
 if (Platform.OS === 'android') {
@@ -29,16 +31,18 @@ const App = () => {
   }, []);
   return (
     <SafeAreaProvider>
-      <StatusBar
-        animated={true}
-        backgroundColor="transparent"
-        barStyle={'dark-content'}
-        translucent={true}
-      />
-      <AppLoading>
-        <Routing />
-      </AppLoading>
-      <FlashMessage position="top" />
+      <Provider store={store}>
+        <StatusBar
+          animated={true}
+          backgroundColor="transparent"
+          barStyle={'dark-content'}
+          translucent={true}
+        />
+        <AppLoading>
+          <Routing />
+        </AppLoading>
+        <FlashMessage position="top" />
+      </Provider>
     </SafeAreaProvider>
   );
 };

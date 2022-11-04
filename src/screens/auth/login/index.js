@@ -17,11 +17,14 @@ import {
 import {Button} from '~/components';
 import utilityMethods from '~/utils/utilityMethods';
 import {AuthService, InvoiceService} from '~/services';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
+import {useDispatch, useSelector} from 'react-redux';
+import {setUser, selectAuthUser} from '~/redux/reducers/authSlice';
 
 export const LogIn = props => {
   const [username, setUsername] = useState(AuthService.username);
   const [password, setPassword] = useState(AuthService.password);
+  const dispatch = useDispatch();
 
   const onLoginPress = useCallback(() => {
     if (!utilityMethods.isEmailValid(username)) {
@@ -48,6 +51,7 @@ export const LogIn = props => {
           type: 'success',
         });
 
+        dispatch(setUser(res));
         // InvoiceService.find().then(res => {
         //   console.log('res', JSON.stringify(res.data.data));
         // });
