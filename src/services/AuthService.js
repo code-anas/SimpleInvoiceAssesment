@@ -28,7 +28,7 @@ class Auth extends Resources {
       ...payload,
     };
 
-    return ApiManager.post(this.routes.login, payload);
+    return ApiManager.post(this.routes.login, payload, true);
   };
 }
 

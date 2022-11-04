@@ -48,12 +48,14 @@ export const LogIn = props => {
           <View>
             <Text style={styles.label}>Email Address</Text>
             <TextInput
+              value={username}
               style={styles.email}
               placeholder="demo@demo.com"></TextInput>
           </View>
           <View>
             <Text style={styles.label}>Password</Text>
             <TextInput
+              value={password}
               style={styles.password}
               secureTextEntry={true}
               placeholder="*******"></TextInput>

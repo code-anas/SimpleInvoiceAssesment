@@ -50,6 +50,11 @@ class Api {
   getVersion() {
     return 'API Manager 1.0';
   }
+  axios(options) {
+    options.url = BASE_URL + options.url;
+    console.log(options);
+    return axios(options);
+  }
 
   setHeaders(token) {
     axios.defaults.headers.common.Authorization =
@@ -66,7 +71,7 @@ class Api {
   }
 
   checkConfig(otherToken) {
-    if(otherToken) {
+    if (otherToken) {
       this.setHeaders(otherToken);
     }
     return new Promise((res, rej) => {
@@ -114,6 +119,9 @@ class Api {
       await this.checkConfig(otherToken);
       if (isUrlEncoded) {
         axios.defaults.headers.common['Content-Type'] = 'multipart/form-data';
+        body = Object.keys(body)
+          .map(key => `${key}=${encodeURIComponent(body[key])}`)
+          .join('&');
       } else if (isUrlEncoded === 'uploadFile') {
         axios.defaults.headers.common['Content-Type'] = 'multipart/form-data';
       } else {
@@ -135,23 +143,5 @@ class Api {
   }
 }
 
-// Singleton ApiManager
-const Singleton = (function () {
-  let instance = null;
-
-  function createInstance() {
-    return new Api();
-  }
-
-  return {
-    getInstance: function () {
-      if (!instance) {
-        instance = createInstance();
-        instance.isInitialized = true;
-      }
-      return instance;
-    },
-  };
-})();
-
-export default Singleton.getInstance();
+const ApiManager = new Api();
+export default ApiManager;
