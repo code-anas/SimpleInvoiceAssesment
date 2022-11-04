@@ -1,14 +1,25 @@
 import {observer} from 'mobx-react-lite';
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, Text, TextInput, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  FlatList,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {InvoiceList} from '~/models/Invoice';
 import styles from './styles';
 import {toJS} from 'mobx';
-import {Button, FilterModal} from '~/components';
+import {Button, CreateInvoiceModal, FilterModal} from '~/components';
+import {hp} from '~/constants/dimensions';
+import colors from '~/constants/colors';
+import {images} from '~/assets/images';
 
 export const Home = observer(props => {
   const [invoices] = useState(() => new InvoiceList());
   const [filterModal, setFilterModal] = useState(false);
+  const [createInvoiceModal, setCreateInvoiceModal] = useState(false);
 
   const FooterComponent = observer(() => {
     if (invoices.hasMoreRecorrds) {
@@ -28,14 +39,38 @@ export const Home = observer(props => {
   const toggleFilterModal = useCallback(() => {
     setFilterModal(s => !s);
   }, [setFilterModal]);
-
+  // renderItem Function.
+  const renderItemFunction = ({item, index}) => {
+    return (
+      <View style={styles.cardStyling}>
+        <Text style={styles.invoiceNumberText}>{item?.invoiceNumber}</Text>
+        <View style={styles.priceContainer}>
+          <Text style={styles.balanceAmountText}>Balance Amount: </Text>
+          <Text style={styles.balanceAmountText1}>{item?.balanceAmount}</Text>
+          <Text style={styles.currency}>{item?.currency}</Text>
+        </View>
+        <View style={{flexDirection: 'row', marginTop: 10}}>
+          <Text style={styles.description}>Description: </Text>
+          <Text style={styles.description1}>{item?.description}</Text>
+        </View>
+        <View style={{flexDirection: 'row', marginTop: 10}}>
+          <Text style={styles.dueDate}>Due Date: </Text>
+          <Text style={styles.dueDate1}>{item?.dueDate}</Text>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={styles.invoiceDate}>Invoice Date:</Text>
+          <Text style={styles.invoiceDate1}>{item?.invoiceDate}</Text>
+        </View>
+      </View>
+    );
+  };
   return (
     <View style={styles.container}>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          paddingHorizontal: 20,
+          paddingHorizontal: hp('2%'),
         }}>
         <TextInput
           placeholder="Search invoice"
@@ -48,27 +83,30 @@ export const Home = observer(props => {
           onPress={toggleFilterModal}
         />
       </View>
+      <View style={{marginTop: 15}} />
       <FlatList
         extraData={toJS(invoices.list)}
         style={{flex: 1}}
         data={invoices.list}
         keyExtractor={item => item.invoiceId}
         showsHorizontalScrollIndicator={false}
-        renderItem={({item, index}) => {
-          return (
-            <View style={{marginVertical: 10}}>
-              <Text>{item?.invoiceNumber}</Text>
-              <Text>{item?.balanceAmount}</Text>
-              <Text>{item?.currency}</Text>
-              <Text>{item?.description}</Text>
-              <Text>dueDate: {item?.dueDate}</Text>
-              <Text>invoiceDate: {item?.invoiceDate}</Text>
-            </View>
-          );
-        }}
+        renderItem={renderItemFunction}
         ListFooterComponent={FooterComponent}
       />
+      <TouchableOpacity
+        onPress={() => setCreateInvoiceModal(true)}
+        style={styles.floatingButton}>
+        <Image
+          source={images.floatingImage}
+          style={styles.floatingImage}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
       <FilterModal isVisible={filterModal} onClose={toggleFilterModal} />
+      <CreateInvoiceModal
+        isVisible={createInvoiceModal}
+        onClose={() => setCreateInvoiceModal(false)}
+      />
     </View>
   );
 });

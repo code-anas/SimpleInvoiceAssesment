@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blueButton,
     justifyContent: 'center',
     alignItems: 'center',
-    height: hp('6%'),
+    height: hp('7%'),
     borderRadius: 20,
     flexDirection: 'row',
     
