@@ -1,14 +1,5 @@
 import React, {useCallback, useMemo, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import Colors from '../../../constants/colors';
 import {
   widthPercentageToDP as wp,
