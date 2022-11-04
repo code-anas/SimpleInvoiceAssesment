@@ -1,4 +1,3 @@
-import {Singleton} from '@/services/Resources';
 class UtilityMethods {
   isEmailValid = email => {
     let reg =
@@ -7,4 +6,5 @@ class UtilityMethods {
   };
 }
 
-export default Singleton(UtilityMethods);
+const utilityMethods = new UtilityMethods();
+export default utilityMethods;

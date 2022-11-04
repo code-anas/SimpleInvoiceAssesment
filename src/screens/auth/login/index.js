@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useMemo, useState} from 'react';
 import {
   View,
   Text,
@@ -15,8 +15,29 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {Button} from '~/components';
+import utilityMethods from '~/utils/utilityMethods';
+import {AuthService} from '~/services';
 
 export const LogIn = props => {
+  const [username, setUsername] = useState(AuthService.username);
+  const [password, setPassword] = useState(AuthService.password);
+
+  const onLoginPress = useCallback(() => {
+    if (!utilityMethods.isEmailValid(username)) {
+      alert('Please type correct email!');
+      return;
+    }
+
+    if (password === '') {
+      alert('Please enter the password');
+      return;
+    }
+
+    AuthService.login({username, password}).then(res => {
+      console.log('Res', res);
+    });
+  }, [username, password]);
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -37,7 +58,7 @@ export const LogIn = props => {
               secureTextEntry={true}
               placeholder="*******"></TextInput>
           </View>
-          <Button title={'Login'} style={styles.login} />
+          <Button title={'Login'} style={styles.login} onPress={onLoginPress} />
         </View>
       </View>
     </KeyboardAvoidingView>

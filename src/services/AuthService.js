@@ -1,9 +1,9 @@
 import ApiManager from './ApiManager';
-import Resources, {Singleton} from './Resources';
-import config from '@/config/appConfig';
+import Resources from './Resources';
+import config from '~/config/appConfig';
 const authConfig = config.auth;
 
-class AuthService extends Resources {
+class Auth extends Resources {
   authUser = {};
   routes = {
     login: 'token',
@@ -32,4 +32,6 @@ class AuthService extends Resources {
   };
 }
 
-export default Singleton(AuthService);
+const AuthService = new Auth();
+
+export default AuthService;
