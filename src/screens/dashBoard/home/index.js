@@ -1,26 +1,35 @@
+import {observer} from 'mobx-react-lite';
 import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, FlatList} from 'react-native';
-import colors from '~/constants/colors';
-import {hp} from '~/constants/dimensions';
-import {InvoiceService} from '~/services';
+import {InvoiceList} from '~/models/Invoice';
 import styles from './styles';
+import {toJS} from 'mobx';
+import {Button} from '~/components';
 
-export const Home = props => {
-  const [invoices, setInvoices] = useState([]);
+export const Home = observer(props => {
+  const [invoices] = useState(() => new InvoiceList());
 
-  useEffect(() => {
-    InvoiceService.find().then(res => {
-      setInvoices(res.data.data);
-    });
-  }, []);
+  const FooterComponent = observer(() => {
+    if (invoices.hasMoreRecorrds) {
+      return (
+        <Button
+          isLoading={invoices.loading}
+          title={'Load more'}
+          style={{marginBottom: 30, alignSelf: 'center'}}
+          onPress={invoices.getInvoices}
+        />
+      );
+    }
+    return null;
+  });
 
   return (
     <View style={styles.container}>
       <TextInput placeholder="Search invoice" style={styles.search} />
       <FlatList
-        fla
+        extraData={toJS(invoices.list)}
         style={{flex: 1}}
-        data={invoices}
+        data={invoices.list}
         keyExtractor={item => item.invoiceId}
         showsHorizontalScrollIndicator={false}
         renderItem={({item, index}) => {
@@ -32,7 +41,8 @@ export const Home = props => {
             </View>
           );
         }}
+        ListFooterComponent={FooterComponent}
       />
     </View>
   );
-};
+});

@@ -1,8 +1,9 @@
 import React, {useContext} from 'react';
 import {ActivityIndicator, Text, TouchableOpacity} from 'react-native';
 import styles from './styles';
+import {observer} from 'mobx-react-lite';
 
-export const Button = props => {
+export const Button = observer(props => {
   const {
     title,
     onPress,
@@ -23,4 +24,4 @@ export const Button = props => {
       {isLoading && <ActivityIndicator size={20} color={loadingColor} />}
     </TouchableOpacity>
   );
-};
+});
