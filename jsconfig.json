@@ -7,7 +7,7 @@
       // "resolveJsonModule": true
       "baseUrl": "./src",
       "paths": {
-        "@/*": ["*"]
+        "~/*": ["*"]
       }
     },
     "exclude": ["build", "node_modules", "static"],

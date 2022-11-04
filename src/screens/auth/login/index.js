@@ -14,7 +14,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {Button} from '@/components';
+import {Button} from '~/components';
 
 export const LogIn = props => {
   return (
@@ -37,7 +37,7 @@ export const LogIn = props => {
               secureTextEntry={true}
               placeholder="*******"></TextInput>
           </View>
-          <Button title={'Login'} />
+          <Button title={'Login'} style={styles.login} />
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -75,100 +75,8 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
   },
-  header: {
-    height: hp(40),
-  },
-  cardDesign: {
-    backgroundColor: Colors.White,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    paddingHorizontal: '5%',
-    paddingVertical: '5%',
-  },
-  signText: {
-    fontSize: 30,
-    color: Colors.BlueColor1st,
-    fontWeight: '700',
-    marginTop: '10%',
-  },
-  signInText: {
-    color: Colors.White,
-    fontWeight: 'bold',
-  },
-  inputs: {
-    marginTop: '10%',
-  },
-  signInBtn: {
-    width: wp(60),
-  },
-  forgotBtn: {
-    backgroundColor: Colors.Transparent,
-    alignItems: 'flex-end',
-    elevation: 0,
-    hadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0,
-    shadowRadius: 0,
-  },
-  forgotText: {
-    textAlign: 'right',
-    fontWeight: '500',
-    color: Colors.BlueColor3rd,
-    // elevation: 0
-  },
-  guestBtn: {
-    backgroundColor: Colors.Transparent,
-    elevation: 0,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0,
-    shadowRadius: 0,
-    marginTop: '10%',
-  },
-  guestText: {
-    fontWeight: '500',
-    color: Colors.ColorPrimary,
-    fontSize: 18,
-    textAlign: 'center',
-    width: wp('60%'),
-  },
-  centerContent: {
-    alignItems: 'center',
-    marginVertical: '20%',
-  },
-
-  container2: {
-    flex: 1,
-  },
-
-  // KeyBoard
-  inner: {
-    padding: 24,
-    flex: 1,
-    justifyContent: 'center',
-  },
-
-  textInput: {
-    height: 40,
-    borderColor: '#000000',
-    borderBottomWidth: 1,
-    marginBottom: 36,
-  },
-  btnContainer: {
-    backgroundColor: 'white',
-    marginTop: 12,
+  login: {
+    marginTop: 20,
+    alignSelf: 'center',
   },
 });
