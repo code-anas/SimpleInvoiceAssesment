@@ -10,10 +10,11 @@ const styles = StyleSheet.create({
   search: {
     height: hp(7),
     borderRadius: 100,
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     fontSize: 14,
     padding: 20,
     backgroundColor: colors.background,
+    width: '80%',
   },
 });
 

@@ -2,7 +2,7 @@ import {runInAction, makeAutoObservable, observable} from 'mobx';
 import {InvoiceService} from '~/services';
 import {Customer} from './Customer';
 import debounce from 'lodash/debounce';
-
+import invoiceFilter from './InvoiceFilter';
 export class Invoice {
   version = '';
 
@@ -89,10 +89,10 @@ export class InvoiceList {
     };
   }
 
-  getInvoices = () => {
+  getInvoices = (isReset = false) => {
     this.loading = true;
 
-    if (this.keyword !== this.currentKeyword) {
+    if (this.keyword !== this.currentKeyword || isReset) {
       this.clearList();
       this.currentKeyword = this.keyword;
     }
@@ -100,6 +100,8 @@ export class InvoiceList {
     const params = {
       pageNum: this.paging.pageNumber + 1,
       keyword: this.keyword,
+      sortBy: invoiceFilter.sortBy,
+      ordering: invoiceFilter.order,
     };
 
     InvoiceService.find(params).then(res => {
