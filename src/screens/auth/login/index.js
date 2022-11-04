@@ -16,7 +16,7 @@ import {
 } from 'react-native-responsive-screen';
 import {Button} from '~/components';
 import utilityMethods from '~/utils/utilityMethods';
-import {AuthService} from '~/services';
+import {AuthService, InvoiceService} from '~/services';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 
 export const LogIn = props => {
@@ -47,7 +47,10 @@ export const LogIn = props => {
           message: 'User successfully login!',
           type: 'success',
         });
-        
+
+        // InvoiceService.find().then(res => {
+        //   console.log('res', JSON.stringify(res.data.data));
+        // });
       }
     });
   }, [username, password]);
