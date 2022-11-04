@@ -7,6 +7,7 @@ class Auth extends Resources {
   authUser = {};
   routes = {
     login: 'token',
+    me: 'membership-service/1.2.0/users/me',
   };
   // Sandbox test user
   username = 'dung+octopus4@101digital.io';
@@ -22,13 +23,27 @@ class Auth extends Resources {
     }
   }
 
+  profile() {
+    return ApiManager.get(this.routes.me).then(res => {
+      this.authUser = res.data.data;
+      return res.data.data;
+    });
+  }
+
   login = async payload => {
     payload = {
       ...authConfig,
       ...payload,
     };
 
-    return ApiManager.post(this.routes.login, payload, true);
+    return ApiManager.post(this.routes.login, payload, true).then(({data}) => {
+      if (data.error) {
+        return data;
+      }
+
+      ApiManager.setHeaders(data.access_token);
+      return this.profile();
+    });
   };
 }
 

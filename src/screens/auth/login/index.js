@@ -17,6 +17,7 @@ import {
 import {Button} from '~/components';
 import utilityMethods from '~/utils/utilityMethods';
 import {AuthService} from '~/services';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 export const LogIn = props => {
   const [username, setUsername] = useState(AuthService.username);
@@ -34,7 +35,20 @@ export const LogIn = props => {
     }
 
     AuthService.login({username, password}).then(res => {
-      console.log('Res', res);
+      if (res.error) {
+        showMessage({
+          message: res.error_description,
+          type: 'danger',
+        });
+      }
+
+      if (res.userId) {
+        showMessage({
+          message: 'User successfully login!',
+          type: 'success',
+        });
+        
+      }
     });
   }, [username, password]);
 
@@ -50,7 +64,9 @@ export const LogIn = props => {
             <TextInput
               value={username}
               style={styles.email}
-              placeholder="demo@demo.com"></TextInput>
+              placeholder="demo@demo.com"
+              onChangeText={setUsername}
+            />
           </View>
           <View>
             <Text style={styles.label}>Password</Text>
@@ -58,7 +74,9 @@ export const LogIn = props => {
               value={password}
               style={styles.password}
               secureTextEntry={true}
-              placeholder="*******"></TextInput>
+              placeholder="*******"
+              onChangeText={setPassword}
+            />
           </View>
           <Button title={'Login'} style={styles.login} onPress={onLoginPress} />
         </View>

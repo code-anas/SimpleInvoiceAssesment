@@ -3,6 +3,7 @@ import {StatusBar, LogBox, Text, TextInput, Platform} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Routing from './src/boot/routing';
 import AppLoading from './src/context/AppLoading';
+import FlashMessage from 'react-native-flash-message';
 
 LogBox.ignoreAllLogs(true);
 if (Platform.OS === 'android') {
@@ -37,6 +38,7 @@ const App = () => {
       <AppLoading>
         <Routing />
       </AppLoading>
+      <FlashMessage position="top" />
     </SafeAreaProvider>
   );
 };
