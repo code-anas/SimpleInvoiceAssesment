@@ -36,8 +36,9 @@ export const Home = observer(props => {
   });
 
   const toggleFilterModal = useCallback(() => {
+    invoices.refresh();
     setFilterModal(s => !s);
-  }, [setFilterModal]);
+  }, [setFilterModal, invoices]);
 
   const onInvoiceModalClose = invoice => {
     if (invoice) {

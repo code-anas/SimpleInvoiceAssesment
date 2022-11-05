@@ -30,7 +30,9 @@ export const CreateInvoiceModal = observer(
           {/* Header */}
           <View style={styles.header}>
             <Text style={styles.createInvoiceText}>Create Invoice:</Text>
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <TouchableOpacity
+              onPress={() => onClose()}
+              style={styles.closeButton}>
               <Image
                 source={images.close}
                 style={styles.closeImage}

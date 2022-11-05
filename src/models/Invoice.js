@@ -265,8 +265,10 @@ export class InvoiceList {
     const params = {
       pageNum: this.paging.pageNumber + 1,
       keyword: this.keyword,
-      // sortBy: invoiceFilter.sortBy,
-      // ordering: invoiceFilter.order,
+      sortBy: invoiceFilter.sortBy,
+      ordering: invoiceFilter.order,
+      fromDate: invoiceFilter.getFromDate,
+      toDate: invoiceFilter.getToDate,
     };
 
     InvoiceService.find(params).then(res => {
@@ -287,6 +289,12 @@ export class InvoiceList {
       });
     });
   };
+
+  refresh() {
+    this.clearList();
+    this.clearPagging(true);
+    this.getInvoices();
+  }
 
   createInvoice = invoice => {
     InvoiceService.create(invoice).then(res => {

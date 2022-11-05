@@ -1,4 +1,5 @@
 import {makeAutoObservable, observable} from 'mobx';
+import moment from 'moment';
 
 const ASCENDING = 'ASCENDING';
 const DESCENDING = 'DESCENDING';
@@ -36,9 +37,18 @@ export class InvoiceFilter {
   setSortBy = sortBy => {
     this.sortBy = sortBy;
   };
+
   setStatusBy = status => {
     this.status = status;
   };
+
+  get getFromDate() {
+    return this.fromDate ? moment(this.fromDate).format('YYYY-MM-DD') : '';
+  }
+
+  get getToDate() {
+    return this.toDate ? moment(this.toDate).format('YYYY-MM-DD') : '';
+  }
 }
 const invoiceFilter = new InvoiceFilter();
 export default invoiceFilter;
