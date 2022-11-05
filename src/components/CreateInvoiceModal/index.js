@@ -14,10 +14,12 @@ import colors from '~/constants/colors';
 import {hp, wp} from '~/constants/dimensions';
 import {Button} from '../Button';
 import SelectDropdown from 'react-native-select-dropdown';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export const CreateInvoiceModal = observer(
   ({isVisible, onClose = () => {}}) => {
     const Accounts = ['Normal', 'Abnormal', 'Serious', 'Very Serious'];
+
     return (
       <Modal isVisible={isVisible}>
         <View style={styles.container}>
@@ -33,11 +35,13 @@ export const CreateInvoiceModal = observer(
             </TouchableOpacity>
           </View>
           {/* Text Fields */}
-          <View style={styles.TextInputContainer}>
+          <ScrollView
+            style={styles.TextInputContainer}
+            showsVerticalScrollIndicator={false}>
             <SelectDropdown
               data={Accounts}
               defaultButtonText="Select an account"
-              buttonStyle={styles.search}
+              buttonStyle={styles.textInput}
               buttonTextStyle={styles.dropdownText}
               onSelect={(selectedItem, index) => {
                 console.log(selectedItem, index);
@@ -49,12 +53,12 @@ export const CreateInvoiceModal = observer(
                 return item;
               }}
             />
-            <TextInput placeholder="Invoice Number" style={styles.search} />
-            <TextInput placeholder="Price" style={styles.search} />
-            <TextInput placeholder="Currency" style={styles.search} />
-            <TextInput placeholder="Invoice Date" style={styles.search} />
-            <TextInput placeholder="Due Date" style={styles.search} />
-          </View>
+            <TextInput placeholder="Invoice Number" style={styles.textInput} />
+            <TextInput placeholder="Price" style={styles.textInput} />
+            <TextInput placeholder="Currency" style={styles.textInput} />
+            <TextInput placeholder="Invoice Date" style={styles.textInput} />
+            <TextInput placeholder="Due Date" style={styles.textInput} />
+          </ScrollView>
           {/* Button */}
           <View>
             <Button
@@ -114,16 +118,16 @@ const styles = StyleSheet.create({
   TextInputContainer: {
     marginTop: hp('1%'),
   },
-  search: {
-    height: hp(5),
-    borderRadius: 20,
+  textInput: {
+    height: hp(6),
+    borderRadius: 5,
     fontSize: 14,
     padding: 10,
     backgroundColor: colors.background,
     width: '100%',
     borderColor: colors.blueButton,
     borderWidth: 0.5,
-    marginVertical: hp('0.5%'),
+    marginVertical: hp(0.5),
   },
   AddInvoiceButton: {
     height: hp('5%'),

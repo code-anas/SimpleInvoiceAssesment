@@ -87,9 +87,7 @@ export const Home = observer(props => {
       <View style={{marginTop: 15}} />
       <FlatList
         refreshing={invoices.isSearching}
-        onRefresh={() => {
-          console.log('===>');
-        }}
+        onRefresh={() => {}}
         extraData={toJS(invoices.list)}
         style={{flex: 1}}
         data={invoices.list}
