@@ -3,6 +3,8 @@ import {InvoiceService} from '~/services';
 import {Customer} from './Customer';
 import debounce from 'lodash/debounce';
 import invoiceFilter from './InvoiceFilter';
+import {v4 as uuidv4} from 'uuid';
+
 export class Invoice {
   version = '';
 
@@ -31,6 +33,7 @@ export class Invoice {
   customer = new Customer();
 
   constructor(payload) {
+    this.key = uuidv4();
     if (payload) {
       this.setPayload(payload);
     }
@@ -52,6 +55,7 @@ export class Invoice {
 export class InvoiceList {
   list = observable.array();
   loading = false;
+  isSearching = false;
   keyword = '';
   currentKeyword = '';
 
@@ -68,7 +72,6 @@ export class InvoiceList {
   }
 
   init() {
-    this.clearList;
     this.getInvoices();
   }
 
@@ -82,20 +85,21 @@ export class InvoiceList {
 
   clearList() {
     this.list = [];
-    this.paging = {
-      totalRecords: 0,
-      pageSize: 10,
-      pageNumber: 0,
-    };
+  }
+
+  clearPagging() {
+    if (this.isDifferentKeyword) {
+      this.paging = {
+        totalRecords: 0,
+        pageSize: 10,
+        pageNumber: 0,
+      };
+    }
   }
 
   getInvoices = () => {
     this.loading = true;
-
-    if (this.keyword !== this.currentKeyword) {
-      this.clearList();
-      this.currentKeyword = this.keyword;
-    }
+    this.clearPagging();
 
     const params = {
       pageNum: this.paging.pageNumber + 1,
@@ -105,6 +109,12 @@ export class InvoiceList {
     };
 
     InvoiceService.find(params).then(res => {
+      // Clear the old data in the list if keyword is not similar from last search
+      if (this.isDifferentKeyword) {
+        this.clearList();
+        this.currentKeyword = this.keyword;
+      }
+
       runInAction(() => {
         this.paging = res.data.paging;
         const invoices = res?.data?.data;
@@ -112,14 +122,22 @@ export class InvoiceList {
           this.setPayload(invoices);
         }
         this.loading = false;
+        this.isSearching = false;
       });
     });
   };
 
   onSearch = debounce(search => {
-    this.keyword = search;
-    this.getInvoices();
+    runInAction(() => {
+      this.keyword = search;
+      this.isSearching = true;
+      this.getInvoices();
+    });
   }, 1000);
+
+  get isDifferentKeyword() {
+    return this.keyword !== this.currentKeyword;
+  }
 
   get hasMoreRecorrds() {
     return this.paging.totalRecords > this.list.length;

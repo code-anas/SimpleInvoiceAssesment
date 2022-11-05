@@ -86,10 +86,14 @@ export const Home = observer(props => {
       </View>
       <View style={{marginTop: 15}} />
       <FlatList
+        refreshing={invoices.isSearching}
+        onRefresh={() => {
+          console.log('===>');
+        }}
         extraData={toJS(invoices.list)}
         style={{flex: 1}}
         data={invoices.list}
-        keyExtractor={item => item.invoiceId}
+        keyExtractor={item => item.key}
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => <RenderItem item={item} />}
         ListFooterComponent={FooterComponent}
