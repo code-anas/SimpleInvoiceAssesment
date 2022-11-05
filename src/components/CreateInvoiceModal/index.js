@@ -21,7 +21,7 @@ import FlashMessage from 'react-native-flash-message';
 
 export const CreateInvoiceModal = observer(
   ({isVisible, onClose = () => {}}) => {
-    const [invoice] = useState(() => new Invoice());
+    const [invoice, setInvoice] = useState(() => new Invoice());
     const [dateBy, setDateBy] = useState('');
 
     return (
@@ -110,7 +110,8 @@ export const CreateInvoiceModal = observer(
               titleStyle={styles.btnTitle}
               onPress={() => {
                 if (invoice.validate()) {
-                  onClose();
+                  onClose(invoice.getPayload());
+                  setInvoice(new Invoice());
                 }
               }}
             />

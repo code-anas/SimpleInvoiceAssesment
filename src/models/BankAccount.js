@@ -1,4 +1,4 @@
-import {makeAutoObservable} from 'mobx';
+import {makeAutoObservable, toJS} from 'mobx';
 
 export class BankAccount {
   bankId = '';
@@ -21,5 +21,9 @@ export class BankAccount {
     Object.entries(payload).forEach(([name, value]) => {
       this.setAttribute(name, value);
     });
+  }
+
+  getDetails() {
+    return toJS(this);
   }
 }

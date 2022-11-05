@@ -39,6 +39,13 @@ export const Home = observer(props => {
     setFilterModal(s => !s);
   }, [setFilterModal]);
 
+  const onInvoiceModalClose = invoice => {
+    if (invoice) {
+      invoices.createInvoice(invoice);
+    }
+    setCreateInvoiceModal(false);
+  };
+
   // renderItem Function.
   const RenderItem = observer(({item, index}) => {
     return (
@@ -108,7 +115,7 @@ export const Home = observer(props => {
       <FilterModal isVisible={filterModal} onClose={toggleFilterModal} />
       <CreateInvoiceModal
         isVisible={createInvoiceModal}
-        onClose={() => setCreateInvoiceModal(false)}
+        onClose={onInvoiceModalClose}
       />
     </View>
   );

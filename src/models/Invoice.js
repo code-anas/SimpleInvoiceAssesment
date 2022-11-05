@@ -7,6 +7,7 @@ import invoiceFilter from './InvoiceFilter';
 import {v4 as uuidv4} from 'uuid';
 import {BankAccount} from './BankAccount';
 import {showMessage} from 'react-native-flash-message';
+import moment from 'moment';
 
 export class Invoice {
   version = '';
@@ -32,7 +33,7 @@ export class Invoice {
   invoiceDate = '';
   dueDate = '';
   createdAt = '';
-  bankAccount = '';
+  bankAccount = new BankAccount();
   customer = new Customer();
   banks = [];
 
@@ -116,6 +117,100 @@ export class Invoice {
 
     return true;
   }
+
+  getPayload() {
+    let payload = {
+      listOfInvoices: [
+        {
+          bankAccount: this.bankAccount.getDetails(),
+          customer: {
+            firstName: 'Nguyen',
+            lastName: 'Dung 2',
+            contact: {
+              email: 'nguyendung2@101digital.io',
+              mobileNumber: '+6597594971',
+            },
+            addresses: [
+              {
+                premise: 'CT11',
+                countryCode: 'VN',
+                postcode: '1000',
+                county: 'hoangmai',
+                city: 'hanoi',
+              },
+            ],
+          },
+          documents: [
+            {
+              documentId: '96ea7d60-89ed-4c3b-811c-d2c61f5feab2',
+              documentName: 'Bill',
+              documentUrl: 'http://url.com/#123',
+            },
+          ],
+          invoiceReference: '#123456',
+          invoiceNumber: this.invoiceNumber,
+          currency: 'GBP',
+          invoiceDate: moment(this.invoiceDate).format('YYYY-MM-DD'),
+          dueDate: moment(this.due).format('YYYY-MM-DD'),
+          description: this.description,
+          customFields: [
+            {
+              key: 'invoiceCustomField',
+              value: 'value',
+            },
+          ],
+          extensions: [
+            {
+              addDeduct: 'ADD',
+              value: 10,
+              type: 'PERCENTAGE',
+              name: 'tax',
+            },
+            {
+              addDeduct: 'DEDUCT',
+              type: 'FIXED_VALUE',
+              value: 10.0,
+              name: 'discount',
+            },
+          ],
+          items: [
+            {
+              itemReference: 'itemRef',
+              description: 'Honda RC150',
+              quantity: 1,
+              rate: 1000,
+              itemName: 'Honda Motor',
+              itemUOM: 'KG',
+              customFields: [
+                {
+                  key: 'taxiationAndDiscounts_Name',
+                  value: 'VAT',
+                },
+              ],
+              extensions: [
+                {
+                  addDeduct: 'ADD',
+                  value: 10,
+                  type: 'FIXED_VALUE',
+                  name: 'tax',
+                },
+                {
+                  addDeduct: 'DEDUCT',
+                  value: 10,
+                  type: 'PERCENTAGE',
+                  name: 'tax',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    console.log(JSON.stringify(payload));
+
+    return payload;
+  }
 }
 
 export class InvoiceList {
@@ -190,6 +285,12 @@ export class InvoiceList {
         this.loading = false;
         this.isSearching = false;
       });
+    });
+  };
+
+  createInvoice = invoice => {
+    InvoiceService.create(invoice).then(res => {
+      console.log('-----', JSON.stringify(res.data.errors));
     });
   };
 
