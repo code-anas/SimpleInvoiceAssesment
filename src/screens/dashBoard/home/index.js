@@ -35,14 +35,14 @@ export const Home = observer(props => {
     return null;
   });
 
-  console.log(filterModal);
   const toggleFilterModal = useCallback(() => {
     setFilterModal(s => !s);
   }, [setFilterModal]);
+
   // renderItem Function.
-  const renderItemFunction = ({item, index}) => {
+  const RenderItem = observer(({item, index}) => {
     return (
-      <View style={styles.cardStyling}>
+      <View style={styles.cardStyling} key={index}>
         <Text style={styles.invoiceNumberText}>{item?.invoiceNumber}</Text>
         <View style={styles.priceContainer}>
           <Text style={styles.balanceAmountText}>Balance Amount: </Text>
@@ -63,7 +63,8 @@ export const Home = observer(props => {
         </View>
       </View>
     );
-  };
+  });
+
   return (
     <View style={styles.container}>
       <View
@@ -90,7 +91,7 @@ export const Home = observer(props => {
         data={invoices.list}
         keyExtractor={item => item.invoiceId}
         showsHorizontalScrollIndicator={false}
-        renderItem={renderItemFunction}
+        renderItem={({item}) => <RenderItem item={item} />}
         ListFooterComponent={FooterComponent}
       />
       <TouchableOpacity

@@ -89,10 +89,10 @@ export class InvoiceList {
     };
   }
 
-  getInvoices = (isReset = false) => {
+  getInvoices = () => {
     this.loading = true;
 
-    if (this.keyword !== this.currentKeyword || isReset) {
+    if (this.keyword !== this.currentKeyword) {
       this.clearList();
       this.currentKeyword = this.keyword;
     }
@@ -100,8 +100,8 @@ export class InvoiceList {
     const params = {
       pageNum: this.paging.pageNumber + 1,
       keyword: this.keyword,
-      sortBy: invoiceFilter.sortBy,
-      ordering: invoiceFilter.order,
+      // sortBy: invoiceFilter.sortBy,
+      // ordering: invoiceFilter.order,
     };
 
     InvoiceService.find(params).then(res => {
