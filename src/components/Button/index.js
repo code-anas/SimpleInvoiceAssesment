@@ -10,8 +10,6 @@ export const Button = observer(props => {
     style,
     titleStyle,
     sendToBuyerButtonStyle,
-    AddInvoiceButton,
-    AddInvoiceButtonTitle,
     disabled,
     loadingColor = 'white',
     isLoading = false,
@@ -21,8 +19,8 @@ export const Button = observer(props => {
     <TouchableOpacity
       disabled={disabled}
       onPress={onPress}
-      style={[styles.container, style, sendToBuyerButtonStyle, AddInvoiceButton]}>
-      <Text style={[styles.title, titleStyle, AddInvoiceButtonTitle]}>{title}</Text>
+      style={[styles.container, style, sendToBuyerButtonStyle]}>
+      <Text style={[styles.title, titleStyle]}>{title}</Text>
       {isLoading && <ActivityIndicator size={20} color={loadingColor} />}
     </TouchableOpacity>
   );

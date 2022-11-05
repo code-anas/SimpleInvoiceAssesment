@@ -1,3 +1,4 @@
+import {createRef} from 'react';
 import {runInAction, makeAutoObservable, observable} from 'mobx';
 import {InvoiceService} from '~/services';
 import {Customer} from './Customer';
@@ -5,6 +6,7 @@ import debounce from 'lodash/debounce';
 import invoiceFilter from './InvoiceFilter';
 import {v4 as uuidv4} from 'uuid';
 import {BankAccount} from './BankAccount';
+import {showMessage} from 'react-native-flash-message';
 
 export class Invoice {
   version = '';
@@ -33,6 +35,8 @@ export class Invoice {
   bankAccount = '';
   customer = new Customer();
   banks = [];
+
+  messageRef = createRef();
 
   constructor(payload) {
     this.key = uuidv4();
@@ -71,6 +75,46 @@ export class Invoice {
       this.setAttribute(name, value);
     });
     this.customer = new Customer(invoice.customer);
+  }
+
+  error = m =>
+    this.messageRef.current.showMessage({
+      message: m,
+      type: 'danger',
+    });
+
+  validate() {
+    if (!this.invoiceNumber) {
+      this.error('Please enter the invoice number!');
+      return false;
+    }
+
+    if (!this.bankAccount) {
+      this.error('Please select the bank account!');
+      return false;
+    }
+
+    if (!this.balanceAmount) {
+      this.error('Please enter the balance ammount!');
+      return false;
+    }
+
+    if (!this.description) {
+      this.error('Please enter the description!');
+      return false;
+    }
+
+    if (!this.dueDate) {
+      this.error('Please select the due date!');
+      return false;
+    }
+
+    if (!this.invoiceDate) {
+      this.error('Please select the invoice date!');
+      return false;
+    }
+
+    return true;
   }
 }
 

@@ -17,12 +17,12 @@ import SelectDropdown from 'react-native-select-dropdown';
 import {ScrollView} from 'react-native-gesture-handler';
 import DatePicker from 'react-native-date-picker';
 import {Invoice} from '~/models/Invoice';
+import FlashMessage from 'react-native-flash-message';
 
 export const CreateInvoiceModal = observer(
   ({isVisible, onClose = () => {}}) => {
     const [invoice] = useState(() => new Invoice());
     const [dateBy, setDateBy] = useState('');
-
 
     return (
       <Modal isVisible={isVisible}>
@@ -67,8 +67,18 @@ export const CreateInvoiceModal = observer(
                 return item.accountName;
               }}
             />
-            <TextInput placeholder="Price" style={styles.textInput} />
-            <TextInput placeholder="Currency" style={styles.textInput} />
+            <TextInput
+              placeholder="Balance Amount"
+              style={styles.textInput}
+              value={invoice.balanceAmount}
+              onChangeText={t => invoice.setAttribute('balanceAmount', t)}
+            />
+            <TextInput
+              placeholder="Description"
+              style={styles.textInput}
+              value={invoice.description}
+              onChangeText={t => invoice.setAttribute('description', t)}
+            />
             <TouchableOpacity
               onPress={() => setDateBy('dueDate')}
               style={styles.label}>
@@ -96,14 +106,22 @@ export const CreateInvoiceModal = observer(
           <View>
             <Button
               title="Add Invoice"
-              AddInvoiceButton={styles.AddInvoiceButton}
-              AddInvoiceButtonTitle={styles.AddInvoiceButtonTitle}
+              style={styles.btn}
+              titleStyle={styles.btnTitle}
               onPress={() => {
-                alert('Invoice Added...!');
-                onClose();
+                if (invoice.validate()) {
+                  onClose();
+                }
               }}
             />
           </View>
+          <FlashMessage
+            position="top"
+            ref={invoice.messageRef}
+            style={{
+              width: wp('100%'),
+            }}
+          />
         </View>
         <DatePicker
           mode="date"
@@ -190,12 +208,12 @@ const styles = StyleSheet.create({
   date: {
     color: '#c9c9cb',
   },
-  AddInvoiceButton: {
+  btn: {
     height: hp('5%'),
     width: wp('90%'),
     marginTop: hp(1),
   },
-  AddInvoiceButtonTitle: {
+  btnTitle: {
     fontSize: 16,
   },
   dropdownText: {
