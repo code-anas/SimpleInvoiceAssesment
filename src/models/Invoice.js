@@ -295,6 +295,12 @@ export class InvoiceList {
           message: res.data.status.message,
           type: 'success',
         });
+      } else {
+        // Temporary msg, will be replaced with server response
+        showMessage({
+          message: 'Bad request',
+          type: 'danger',
+        });
       }
     });
   };
