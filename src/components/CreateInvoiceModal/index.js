@@ -15,10 +15,14 @@ import {hp, wp} from '~/constants/dimensions';
 import {Button} from '../Button';
 import SelectDropdown from 'react-native-select-dropdown';
 import {ScrollView} from 'react-native-gesture-handler';
+import DatePicker from 'react-native-date-picker';
+import {Invoice} from '~/models/Invoice';
 
 export const CreateInvoiceModal = observer(
   ({isVisible, onClose = () => {}}) => {
-    const Accounts = ['Normal', 'Abnormal', 'Serious', 'Very Serious'];
+    const [invoice] = useState(() => new Invoice());
+    const [dateBy, setDateBy] = useState('');
+
 
     return (
       <Modal isVisible={isVisible}>
@@ -38,26 +42,55 @@ export const CreateInvoiceModal = observer(
           <ScrollView
             style={styles.TextInputContainer}
             showsVerticalScrollIndicator={false}>
+            <TextInput
+              placeholder="Invoice Number"
+              style={styles.textInput}
+              value={invoice.invoiceNumber}
+              onChangeText={t => invoice.setAttribute('invoiceNumber', t)}
+            />
+
             <SelectDropdown
-              data={Accounts}
+              data={invoice.banks}
               defaultButtonText="Select an account"
               buttonStyle={styles.textInput}
-              buttonTextStyle={styles.dropdownText}
-              onSelect={(selectedItem, index) => {
-                console.log(selectedItem, index);
+              buttonTextStyle={{
+                ...styles.dropdownText,
+                color: invoice.bankAccount ? colors.black : colors.placeholder,
+              }}
+              onSelect={(bank, index) => {
+                invoice.setAttribute('bankAccount', bank);
               }}
               buttonTextAfterSelection={(selectedItem, index) => {
-                return selectedItem;
+                return selectedItem.accountName;
               }}
               rowTextForSelection={(item, index) => {
-                return item;
+                return item.accountName;
               }}
             />
-            <TextInput placeholder="Invoice Number" style={styles.textInput} />
             <TextInput placeholder="Price" style={styles.textInput} />
             <TextInput placeholder="Currency" style={styles.textInput} />
-            <TextInput placeholder="Invoice Date" style={styles.textInput} />
-            <TextInput placeholder="Due Date" style={styles.textInput} />
+            <TouchableOpacity
+              onPress={() => setDateBy('dueDate')}
+              style={styles.label}>
+              <Text
+                style={{
+                  color: invoice?.dueDate ? colors.black : colors.placeholder,
+                }}>
+                {invoice.dueDate?.toDateString?.() || 'Due Date'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setDateBy('invoiceDate')}
+              style={styles.label}>
+              <Text
+                style={{
+                  color: invoice?.invoiceDate
+                    ? colors.black
+                    : colors.placeholder,
+                }}>
+                {invoice?.invoiceDate?.toDateString?.() || 'Invoice Date'}
+              </Text>
+            </TouchableOpacity>
           </ScrollView>
           {/* Button */}
           <View>
@@ -72,6 +105,19 @@ export const CreateInvoiceModal = observer(
             />
           </View>
         </View>
+        <DatePicker
+          mode="date"
+          modal
+          open={!!dateBy}
+          date={new Date()}
+          onConfirm={date => {
+            invoice.setAttribute(dateBy, date);
+            setDateBy('');
+          }}
+          onCancel={() => {
+            setDateBy('');
+          }}
+        />
       </Modal>
     );
   },
@@ -129,6 +175,21 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     marginVertical: hp(0.5),
   },
+  label: {
+    height: hp(6),
+    borderRadius: 5,
+    fontSize: 14,
+    padding: 10,
+    backgroundColor: colors.background,
+    width: '100%',
+    borderColor: colors.blueButton,
+    borderWidth: 0.5,
+    marginVertical: hp(0.5),
+    justifyContent: 'center',
+  },
+  date: {
+    color: '#c9c9cb',
+  },
   AddInvoiceButton: {
     height: hp('5%'),
     width: wp('90%'),
@@ -139,7 +200,7 @@ const styles = StyleSheet.create({
   },
   dropdownText: {
     fontSize: 14,
-    color: colors.placeholder,
+    // color: colors.placeholder,
     textAlign: 'left',
   },
 });

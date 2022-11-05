@@ -4,6 +4,7 @@ import {Customer} from './Customer';
 import debounce from 'lodash/debounce';
 import invoiceFilter from './InvoiceFilter';
 import {v4 as uuidv4} from 'uuid';
+import {BankAccount} from './BankAccount';
 
 export class Invoice {
   version = '';
@@ -29,15 +30,36 @@ export class Invoice {
   invoiceDate = '';
   dueDate = '';
   createdAt = '';
-
+  bankAccount = '';
   customer = new Customer();
+  banks = [];
 
   constructor(payload) {
     this.key = uuidv4();
     if (payload) {
       this.setPayload(payload);
+    } else {
+      this.genrateInvoiceNumber();
+      this.banks.push(
+        new BankAccount({
+          sortCode: '09-01-01',
+          accountNumber: '12345678',
+          accountName: 'John Terry',
+        }),
+      );
+      this.banks.push(
+        new BankAccount({
+          sortCode: '08-21-01',
+          accountNumber: '98765432',
+          accountName: 'Anas Naeem',
+        }),
+      );
     }
     makeAutoObservable(this);
+  }
+
+  genrateInvoiceNumber() {
+    this.invoiceNumber = 'INV' + Math.random().toString().slice(2, 11);
   }
 
   setAttribute(name, value) {
