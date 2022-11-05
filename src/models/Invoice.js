@@ -269,6 +269,7 @@ export class InvoiceList {
       ordering: invoiceFilter.order,
       fromDate: invoiceFilter.getFromDate,
       toDate: invoiceFilter.getToDate,
+      status: invoiceFilter.status,
     };
 
     InvoiceService.find(params).then(res => {
@@ -326,6 +327,6 @@ export class InvoiceList {
   }
 
   get hasMoreRecorrds() {
-    return this.paging.totalRecords > this.list.length;
+    return this.paging?.totalRecords > this.list.length;
   }
 }

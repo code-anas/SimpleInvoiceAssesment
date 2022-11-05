@@ -15,6 +15,7 @@ import {Button, CreateInvoiceModal, FilterModal} from '~/components';
 import {hp} from '~/constants/dimensions';
 import colors from '~/constants/colors';
 import {images} from '~/assets/images';
+import moment from 'moment';
 
 export const Home = observer(props => {
   const [invoices] = useState(() => new InvoiceList());
@@ -68,6 +69,18 @@ export const Home = observer(props => {
         <View style={{flexDirection: 'row'}}>
           <Text style={styles.invoiceDate}>Invoice Date:</Text>
           <Text style={styles.invoiceDate1}>{item?.invoiceDate}</Text>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={styles.invoiceDate}>Created Date:</Text>
+          <Text style={styles.invoiceDate1}>
+            {moment(item?.createdAt).format('YYYY-MM-DD')}
+          </Text>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={styles.invoiceDate}>Status:</Text>
+          <Text style={styles.invoiceDate1}>
+            {item.status.map(status => status.key + ' ')}
+          </Text>
         </View>
       </View>
     );

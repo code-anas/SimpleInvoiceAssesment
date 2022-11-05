@@ -4,12 +4,12 @@ import moment from 'moment';
 const ASCENDING = 'ASCENDING';
 const DESCENDING = 'DESCENDING';
 
-const CREATED_DATE = 'CREATED DATE';
-const INVOICE_DATE = 'INVOICE DATE';
-const DUE_DATE = 'DUE DATE';
+const CREATED_DATE = 'CREATED_DATE';
+const INVOICE_DATE = 'INVOICE_DATE';
 
-const PAID = 'PAID';
-const OVERDUE = 'OVERDUE';
+const PAID = 'Paid';
+const OVERDUE = 'Overdue';
+const Due = 'Due';
 
 export class InvoiceFilter {
   order = '';
@@ -20,7 +20,7 @@ export class InvoiceFilter {
 
   orders = [ASCENDING, DESCENDING];
   sorts = [CREATED_DATE, INVOICE_DATE];
-  statuses = [PAID, OVERDUE];
+  statuses = [PAID, Due, OVERDUE];
 
   constructor() {
     makeAutoObservable(this);
