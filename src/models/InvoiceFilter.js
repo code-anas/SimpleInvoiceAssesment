@@ -18,7 +18,7 @@ export class InvoiceFilter {
   status = '';
 
   orders = [ASCENDING, DESCENDING];
-  sorts = [CREATED_DATE, INVOICE_DATE, DUE_DATE];
+  sorts = [CREATED_DATE, INVOICE_DATE];
   statuses = [PAID, OVERDUE];
 
   constructor() {
