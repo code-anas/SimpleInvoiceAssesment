@@ -248,8 +248,8 @@ export class InvoiceList {
     this.list = [];
   }
 
-  clearPagging() {
-    if (this.isDifferentKeyword) {
+  clearPagging(force) {
+    if (this.isDifferentKeyword || force) {
       this.paging = {
         totalRecords: 0,
         pageSize: 10,
@@ -290,7 +290,12 @@ export class InvoiceList {
 
   createInvoice = invoice => {
     InvoiceService.create(invoice).then(res => {
-      console.log('-----', JSON.stringify(res.data.errors));
+      if (!res.data.errors) {
+        showMessage({
+          message: res.data.status.message,
+          type: 'success',
+        });
+      }
     });
   };
 
